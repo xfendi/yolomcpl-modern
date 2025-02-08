@@ -1,18 +1,16 @@
 <template>
-  <div class="container mx-auto sm:px-4 flex flex-col mt-4">
-    <div class="flex items-center ml-6">
-      <h1 class="text-4xl">{{ product.name }}</h1>
-      <span
-        class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded ms-2 mb-2 fs-6"
-        style="background-color: var(--primary-color)"
-        v-if="product.promo"
-        >-{{ product.promo }}%</span
-      >
+  <div>
+    <div class="text-center w-full mb-20 mt-10" data-aos="fade-up">
+      <h2 class="metropolis text-5xl text-gray-800">
+        {{ product.name }}
+      </h2>
     </div>
-    <div class="bg-second xl:p-6 p-0 xl:m-6 product-section-overlay">
-      <div class="xl:m-4 m-0 flex flex-wrap justify-center">
-        <div class="flex xl:w-3/4 pr-4 pl-4 w-full flex flex-wrap">
-          <div class="flex flex-col w-full xl:w-1/4 pr-4 pl-4 items-center">
+    <div>
+      <div class="flex flex-row gap-5">
+        <div class="flex flex-col gap-5 flex-1" data-aos="fade-right">
+          <div
+            class="bg-gray-200 flex justify-center items-center rounded-3xl p-10"
+          >
             <img
               v-if="product.image"
               :src="product.image"
@@ -20,41 +18,45 @@
               width="200"
               height="200"
             />
+          </div>
+          <div class="flex flex-col w-full bg-gray-200 p-10 rounded-2xl">
+            <p v-html="product.description" class="product-description"></p>
+          </div>
+          <label for="">Kod Promocyjny</label>
+          <div class="flex gap-5">
             <input
               type="text"
-              class="input-txt mt-4 mb-2"
+              class="p-5 text-center rounded-xl border-2 border-gray-300 w-full flex-1"
               name="nick"
               id="nick"
-              placeholder="Kod rabatowy"
+              placeholder="np. FERIE"
               v-model="promoCode.code"
               :disabled="Boolean(product.promo)"
             />
             <button
-              class="gradient-button w-full"
-              v-if="promoCode.code && !promoCode.discount"
+              class="transition text-center !w-full p-4 px-10 rounded-xl border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black flex-1"
               @click="usePromoCode()"
             >
               Zastosuj
             </button>
           </div>
-          <div class="flex flex-col w-full xl:w-3/4 pr-4 pl-4">
-            <p v-html="product.description" class="product-description"></p>
-          </div>
         </div>
 
-        <div class="flex flex-col xl:w-1/4 pr-4 pl-4 w-full">
-          <div
-            class="relative inline-flex align-middle flex flex-wrap"
-            role="group"
-          >
-            <span class="mb-5" v-if="providers.length > 1"
-              >Wybierz metodę płatności</span
-            >
-            <div
-              v-for="provider in filterProviders()"
-              :key="provider.id"
-              class="w-full mb-2"
-            >
+        <div class="flex-1 flex flex-col gap-5" data-aos="fade-left">
+          <div class="flex flex-col gap-5">
+            <label for="">Nick z gry</label>
+            <input
+              type="text"
+              class="p-5 rounded-xl border-2 border-gray-300 w-full flex-1"
+              name="nick"
+              id="nick"
+              placeholder="np. fendziorr"
+              v-model="playerName"
+            />
+          </div>
+          <label for="">Wybierz metodę płatności</label>
+          <div class="flex gap-5 my-5 w-full h-max">
+            <div v-for="provider in filterProviders()" :key="provider.id">
               <input
                 @click="paymentMethod = provider.provider"
                 type="radio"
@@ -64,11 +66,11 @@
                 :disabled="!$store.state.shop.online"
               />
               <label
-                class="check-btn text-center uppercase"
+                class="transition text-center p-4 px-10 rounded-xl border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
                 :for="provider.id"
                 v-if="!provider.is_sms"
                 >{{ provider.name }}
-                <span class="fw-semibold"
+                <span
                   >{{
                     $price.calcPrice(
                       product.prices[provider.provider],
@@ -76,79 +78,13 @@
                       quantity
                     )
                   }}
-                  zł</span
-                ></label
-              >
-              <label
-                class="check-btn text-center uppercase"
-                :for="provider.id"
-                v-else
-                >{{ provider.name }}
-                <span class="fw-semibold"
-                  >{{
-                    getSmsPrice(provider, product.prices[provider.provider])
-                      .price
-                  }}
-                  zł</span
+                  ZŁ</span
                 ></label
               >
             </div>
           </div>
 
-          <div class="flex flex-col mt-3">
-            <div v-if="paymentMethod === 'hotpay_sms'" class="mb-4">
-              Wyślij SMS o treści
-              <b>{{
-                getSmsPrice(
-                  getProvider(paymentMethod),
-                  product.prices[paymentMethod]
-                ).sms_content
-              }}</b>
-              na numer
-              <b>{{
-                getSmsPrice(
-                  getProvider(paymentMethod),
-                  product.prices[paymentMethod]
-                ).number
-              }}</b
-              >. Koszt SMSa wynosi
-              <b>{{
-                getSmsPrice(
-                  getProvider(paymentMethod),
-                  product.prices[paymentMethod]
-                ).price
-              }}</b>
-              zł brutto.
-            </div>
-            <div v-else-if="isSms(paymentMethod)" class="mb-4">
-              Wyślij SMS o treści
-              <b>{{ getProvider(paymentMethod).sms_content }}</b> na numer
-              <b>{{
-                getSmsPrice(
-                  getProvider(paymentMethod),
-                  product.prices[paymentMethod]
-                ).number
-              }}</b
-              >. Koszt SMSa wynosi
-              <b>{{
-                getSmsPrice(
-                  getProvider(paymentMethod),
-                  product.prices[paymentMethod]
-                ).price
-              }}</b>
-              zł brutto.
-            </div>
-
-            <input
-              type="text"
-              class="input-txt"
-              name="nick"
-              id="nick"
-              placeholder="Nick gracza"
-              v-model="playerName"
-              min="3"
-              maxlength="16"
-            />
+          <div class="flex gap-5 flex-col">
             <input
               type="text"
               class="input-txt mt-2"
@@ -159,14 +95,14 @@
               v-if="isSms(paymentMethod)"
             />
 
-            <div v-if="product.slider" class="input-txt mt-2 flex flex-col">
-              <label for="quantity" class="form-label mb-3"
-                >{{ product.slider_name }} -
-                <span class="fw-semibold">{{ quantity }}</span></label
-              >
+            <label v-if="product.slider" for="quantity mb-10"
+              >{{ product.slider_name }} - {{ quantity }}</label
+            >
+
+            <div v-if="product.slider" class="bg-gray-200 p-5 rounded-2xl">
               <input
                 type="range"
-                class="range w-full mb-3"
+                class="range"
                 id="quantity"
                 v-model="quantity"
                 :min="product.slider_min"
@@ -174,14 +110,14 @@
               />
             </div>
 
-            <div class="flex flex-row mt-2" v-if="$store.state.shop.rules">
+            <div class="flex flex-row gap-5" v-if="$store.state.shop.rules">
               <input
-                class="checkbox"
+                class="checkbox rounded-full"
                 type="checkbox"
                 v-model="acceptedRules"
                 id="acceptRulesCheckbox"
               />
-              <label class="ms-2" for="acceptRulesCheckbox"
+              <label for="acceptRulesCheckbox"
                 >Akceptuję
                 <a :href="$store.state.shop.rules" target="_blank"
                   >regulamin</a
@@ -190,7 +126,7 @@
             </div>
 
             <button
-              class="gradient-button mt-2"
+              class="transition text-center !w-full p-4 px-10 rounded-xl border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
               @click="buyProduct()"
               :disabled="!$store.state.shop.online"
             >
@@ -452,31 +388,33 @@ button:disabled {
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 15px;
-  width: 15px;
+  height: 25px;
+  width: 25px;
   border-radius: 50px;
-  background: var(--primary-color);
+  background: #ffd54f;
 }
 .range {
   -webkit-appearance: none;
-  margin-right: 15px;
   width: 200px;
-  height: 7px;
-  background: rgba(255, 255, 255, 0.6);
+  height: 15px;
+  background: #eeeeee;
   border-radius: 5px;
-  background: #ffffff;
   background-repeat: no-repeat;
 }
 .check-btn:hover {
   cursor: pointer;
   background: #a98455;
 }
+label {
+  cursor: pointer;
+}
 input[type="radio"]:checked ~ label {
-  background: var(--primary-color);
+  background: #ffd54f;
+  color: black;
 }
 input[type="checkbox"] {
   appearance: none;
-  background: #1e1e1e;
+  background: #eeeeee;
   outline: none;
   width: 25px;
   height: 25px;
@@ -489,11 +427,12 @@ input[type="checkbox"]:hover {
 }
 input[type="checkbox"]::before {
   content: "";
-  width: 15px;
-  height: 15px;
+  width: 25px;
+  height: 25px;
   transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--primary-color);
+  background: #ffd54f;
+  border-radius: 50%;
+  transition: 0.3s transform ease-in-out;
 }
 input[type="checkbox"]:checked::before {
   transform: scale(1);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section
-    data-aos="flip-up"
+      data-aos="flip-up"
       class="intro relative flex flex-col lg:flex-row justify-center overflow-hidden lg:justify-between items-center md:items-start bg-gray-300 p-10 pb-0 rounded-3xl"
     >
       <img
@@ -56,7 +56,7 @@
         <h2 class="metropolis text-5xl text-gray-800">Zobacz nasze tryby</h2>
       </div>
       <div
-      data-aos="flip-up"
+        data-aos="flip-up"
         class="flex items-center columns-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 w-full"
         style="height: 400px"
       >
@@ -138,7 +138,7 @@
         </h2>
       </div>
       <div
-      data-aos="flip-up"
+        data-aos="flip-up"
         class="flex gap-20 sm:gap-10 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 items-start"
       >
         <div

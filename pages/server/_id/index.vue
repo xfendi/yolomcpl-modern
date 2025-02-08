@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-center w-full my-20">
+    <div class="text-center w-full mb-20 mt-10" data-aos="fade-up">
       <p>Najlepsza selekcja produktów dla</p>
       <h2 class="metropolis text-5xl text-gray-800">
         {{ $store.state.server.name }}
@@ -15,6 +15,7 @@
       >
 
       <div
+        data-aos="flip-up"
         class="p-10 gap-10 flex relative justify-between h-full border-2 rounded-3xl border-neutral-500 flex-col justify-between"
         v-for="product in $store.state.products"
         v-bind:key="product.id"
@@ -64,21 +65,6 @@
             </div>
           </nuxt-link>
         </div>
-      </div>
-    </div>
-
-    <div v-if="$store.state.shop.monthly_goal_public !== null">
-      <div class="flex justify-between gap-10 mt-20 w-full">
-        <div class="lighter-bg rounded-full" style="width: 95%">
-          <div
-            class="bg-yellow-300 rounded-l-full"
-            :style="`width: ` + $store.state.shop.monthly_goal_public + `%;`"
-            v-bind:class="{
-              'h-full': $store.state.shop.monthly_goal_public > 0,
-            }"
-          ></div>
-        </div>
-        <span>{{ Math.ceil($store.state.shop.monthly_goal_public) }}%</span>
       </div>
     </div>
   </div>

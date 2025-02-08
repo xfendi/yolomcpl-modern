@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center">
-    <div class="text-center w-full my-20" data-aos="fade-up">
+    <div class="text-center w-full mb-20 mt-10" data-aos="fade-up">
       <p>Zrealizuj swój voucher</p>
       <h2 class="metropolis text-5xl text-gray-800">Voucher</h2>
     </div>

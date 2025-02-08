@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center mt-20">
+  <div class="text-center mt-10" data-aos="fade-up">
     <h1
       v-if="error.statusCode === 404"
       class="metropolis text-5xl text-gray-800"
