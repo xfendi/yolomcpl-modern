@@ -2,7 +2,7 @@ import tailwindTypography from "@tailwindcss/typography";
 
 module.exports = {
   buildDir: "dist",
-  target: "static", // To wymusza generowanie statycznych plików
+  target: "server", // To wymusza generowanie statycznych plików
   ssr: true,
   publicRuntimeConfig: {
     shop_id: 13760, // id sklepu na vishop
