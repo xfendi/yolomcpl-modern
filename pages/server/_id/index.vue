@@ -53,7 +53,7 @@
           <p v-if="product.description" v-html="product.description"></p>
           <a
             :href="
-              'https://vishop.pl/pay/' + $store.state.shop.id + '/' + product.id
+              '/server/' + $store.state.server.id + '/product/' + product.id
             "
             class="transition text-center !w-full p-4 px-10 rounded-xl border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
           >
