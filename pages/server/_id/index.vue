@@ -51,10 +51,8 @@
 
         <div class="flex flex-col gap-5">
           <p v-if="product.description" v-html="product.description"></p>
-          <a
-            :href="
-              '/server/' + $store.state.server.id + '/product/' + product.id
-            "
+          <nuxt-link
+            :to="'/server/' + $store.state.server.id + '/product/' + product.id"
             class="transition text-center !w-full p-4 px-10 rounded-xl border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
           >
             Kliknij, aby kupić
@@ -64,18 +62,20 @@
             >
               -{{ product.promo }}%
             </div>
-          </a>
+          </nuxt-link>
         </div>
       </div>
     </div>
 
     <div v-if="$store.state.shop.monthly_goal_public !== null">
       <div class="flex justify-between gap-10 mt-20 w-full">
-        <div class="lighter-bg rounded-full" style="width: 95%;">
+        <div class="lighter-bg rounded-full" style="width: 95%">
           <div
             class="bg-yellow-300 rounded-l-full"
             :style="`width: ` + $store.state.shop.monthly_goal_public + `%;`"
-            v-bind:class="{ 'h-full': $store.state.shop.monthly_goal_public > 0 }"
+            v-bind:class="{
+              'h-full': $store.state.shop.monthly_goal_public > 0,
+            }"
           ></div>
         </div>
         <span>{{ Math.ceil($store.state.shop.monthly_goal_public) }}%</span>
