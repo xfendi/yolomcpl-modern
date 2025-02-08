@@ -1,6 +1,7 @@
 import tailwindTypography from "@tailwindcss/typography";
 
 module.exports = {
+  buildDir: "dist",
   publicRuntimeConfig: {
     shop_id: 13760, // id sklepu na vishop
     description:
